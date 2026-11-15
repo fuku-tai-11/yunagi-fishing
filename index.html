@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="画面のキーを押して魚を釣る、60秒のキーボードゲーム。">
+  <title>夕凪フィッシング</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <header class="mast">
+    <div class="brand"><span class="logo" aria-hidden="true">◈</span><span>夕凪フィッシング</span></div>
+    <a href="#history">プレイ履歴 <span aria-hidden="true">↘</span></a>
+  </header>
+  <main>
+    <div class="title">
+      <h1>夕凪フィッシング</h1>
+      <p>魚を釣りながら、60秒のタイピング練習。</p>
+    </div>
+    <div class="layout">
+      <section class="game" aria-label="釣りゲーム">
+        <div class="stats">
+          <div><span>残り時間</span><strong id="time">60.0</strong><small> 秒</small></div>
+          <div><span>スコア</span><strong id="score">0</strong><small> 点</small></div>
+          <div><span>釣った魚</span><strong id="count">0</strong><small> 匹</small></div>
+        </div>
+        <div class="scene">
+          <canvas id="lake" width="360" height="168" aria-hidden="true"></canvas>
+          <div class="scene-label"><i></i> 夕凪の湖</div>
+        </div>
+        <div class="controls">
+          <div id="menu">
+            <p id="message" role="status">時間内に、画面に出るキーをすべて押そう。</p>
+            <button id="start" type="button">釣りを始める <span aria-hidden="true">→</span></button>
+          </div>
+          <div id="challenge" hidden>
+            <div class="fish-heading"><strong id="fish"></strong><span id="value"></span><span id="bite-time"></span></div>
+            <div class="meter" aria-hidden="true"><div id="meter-fill"></div></div>
+            <div id="keys" aria-label="必要なキー"></div>
+            <p id="feedback" role="status">順不同で押せます</p>
+          </div>
+        </div>
+      </section>
+      <aside>
+        <section class="panel">
+          <h2>遊び方</h2>
+          <ol>
+            <li>表示されたキーを押す。画面のキーもタップできます。</li>
+            <li>魚が逃げるまでの最大4秒間に、必要なキーを全部押す。順番は自由です。</li>
+            <li>釣った数が増えると、上下の段のキーも登場。終わったら正打数と正確率をチェック。</li>
+          </ol>
+        </section>
+        <section class="panel" id="history">
+          <h2>プレイ履歴</h2>
+          <div class="best"><span>自己ベスト</span><div><strong id="best">—</strong> 点</div></div>
+          <p id="empty">最初のプレイを終えると、ここに記録が残ります。</p>
+          <ol id="records" aria-label="最近のプレイ"></ol>
+          <p id="storage-note" hidden>このブラウザでは履歴を保存できません。</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>
