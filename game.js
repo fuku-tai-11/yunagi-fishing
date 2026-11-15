@@ -1,12 +1,13 @@
 "use strict";
 
 const byId = (id) => document.getElementById(id);
+const fishTimeLimit = 5000;
 const tiers = [
-  { from: 0, name: "フナ", keys: 1, points: 100, duration: 4000, letters: "FJDKSL" },
-  { from: 3, name: "コイ", keys: 2, points: 250, duration: 4000, letters: "ASDFGHJKL" },
-  { from: 6, name: "ニジマス", keys: 3, points: 450, duration: 3700, letters: "QWERTYUIOPASDFGHJKL" },
-  { from: 10, name: "イワナ", keys: 4, points: 700, duration: 3400, letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
-  { from: 15, name: "イトウ", keys: 5, points: 1000, duration: 3000, letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+  { from: 0, name: "フナ", keys: 1, points: 100, letters: "FJDKSL" },
+  { from: 3, name: "コイ", keys: 2, points: 250, letters: "ASDFGHJKL" },
+  { from: 6, name: "ニジマス", keys: 3, points: 450, letters: "QWERTYUIOPASDFGHJKL" },
+  { from: 10, name: "イワナ", keys: 4, points: 700, letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+  { from: 15, name: "イトウ", keys: 5, points: 1000, letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
 ];
 const recordKey = "yunagi-fishing-history-v1";
 const number = new Intl.NumberFormat("ja-JP");
@@ -69,12 +70,12 @@ function nextFish(now, message) {
     const button = document.createElement("button");
     button.className = "key";
     button.type = "button";
-    button.textContent = key;
+    button.textContent = key.toLowerCase();
     button.setAttribute("aria-pressed", "false");
     button.addEventListener("click", () => pressKey(key, performance.now()));
     keys.set(key, button);
   }
-  round.fish = { tier, keys, pressed: new Set(), expires: Math.min(now + tier.duration, round.expires) };
+  round.fish = { tier, keys, pressed: new Set(), expires: Math.min(now + fishTimeLimit, round.expires) };
   byId("fish").textContent = tier.name;
   byId("value").textContent = "+" + number.format(tier.points) + " 点";
   byId("keys").replaceChildren(...keys.values());
@@ -153,7 +154,7 @@ function frame(now) {
   const remaining = round.fish.expires - now;
   byId("time").textContent = (Math.ceil((round.expires - now) / 100) / 10).toFixed(1);
   byId("bite-time").textContent = (Math.ceil(remaining / 100) / 10).toFixed(1) + " 秒";
-  byId("meter-fill").style.transform = `scaleX(${remaining / round.fish.tier.duration})`;
+  byId("meter-fill").style.transform = `scaleX(${remaining / fishTimeLimit})`;
   frameId = requestAnimationFrame(frame);
 }
 
